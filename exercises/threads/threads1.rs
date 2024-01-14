@@ -6,8 +6,6 @@
 // The program should wait until all the spawned threads have finished and
 // should collect their return values into a vector.
 
-// I AM NOT DONE
-
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -25,12 +23,18 @@ fn main() {
     let mut results: Vec<u128> = vec![];
     for handle in handles {
         // TODO: a struct is returned from thread::spawn, can you use it?
+        // match handle.join() {
+        //     Ok(time) => results.push(time),
+        //     Err(e) => println!("Thread panicked {:?}", e),
+        // }
+        // results.push(handle.join().unwrap());
+        results.push(handle.join().expect("Thread panicked"));
     }
 
     if results.len() != 10 {
         panic!("Oh no! All the spawned threads did not finish!");
     }
-    
+
     println!();
     for (i, result) in results.into_iter().enumerate() {
         println!("thread {} took {}ms", i, result);
