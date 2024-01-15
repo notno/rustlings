@@ -23,8 +23,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
 // You need to create an implementation for a tuple of three integers,
@@ -38,6 +36,25 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        // let (r, g, b) = tuple;
+        // Ok(Color {
+        //     red: r as u8,
+        //     green: g as u8,
+        //     blue: b as u8,
+        // })
+        match tuple {
+            (r, g, b)
+                if (0..=255).contains(&r) && (0..=255).contains(&g) && (0..=255).contains(&b) =>
+            {
+                Ok(Color {
+                    red: r as u8,
+                    green: g as u8,
+                    blue: b as u8,
+                })
+            }
+            (_, _, _) => Err(IntoColorError::IntConversion),
+            _ => Err(IntoColorError::BadLen),
+        }
     }
 }
 
@@ -45,13 +62,46 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        // let (r, g, b) = (arr[0], arr[1], arr[2]);
+        // Ok(Color {
+        //     red: r as u8,
+        //     green: g as u8,
+        //     blue: b as u8,
+        // })
+        match arr {
+            [r, g, b]
+                if (0..=255).contains(&r) && (0..=255).contains(&g) && (0..=255).contains(&b) =>
+            {
+                Ok(Color {
+                    red: r as u8,
+                    green: g as u8,
+                    blue: b as u8,
+                })
+            }
+            [_, _, _] => Err(IntoColorError::IntConversion),
+            _ => Err(IntoColorError::BadLen),
+        }
     }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
+
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        match slice {
+            &[r, g, b]
+                if (0..=255).contains(&r) && (0..=255).contains(&g) && (0..=255).contains(&b) =>
+            {
+                Ok(Color {
+                    red: r as u8,
+                    green: g as u8,
+                    blue: b as u8,
+                })
+            }
+            &[_, _, _] => Err(IntoColorError::IntConversion),
+            _ => Err(IntoColorError::BadLen),
+        }
     }
 }
 
